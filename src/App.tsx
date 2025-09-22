@@ -11,6 +11,7 @@ function App(){
       <div>
         <div>
         <h1>Hello React + Typescript </h1>
+        
         <p>Count: {count}</p>
         <button onClick={()=>{setCount(count+1)}}>Click me</button>
         </div>
