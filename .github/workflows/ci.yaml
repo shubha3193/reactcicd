@@ -1,0 +1,27 @@
+name: cicd-project-demo
+
+on:
+  push:
+    branches:
+     - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: action/checkout@v3
+
+      - name: Set up Node.job
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+            
+
+
