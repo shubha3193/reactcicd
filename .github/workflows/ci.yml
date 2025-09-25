@@ -11,17 +11,16 @@ on:
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
-
     steps:
       # Checkout code
       - name: Checkout repository
         uses: actions/checkout@v3
 
       # Setup Node.js v22
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22.14.0'
+          node-version: '18'
 
       # Install dependencies
       - name: Install dependencies
@@ -29,16 +28,4 @@ jobs:
 
       # Run tests
       - name: Run tests
-        run: npm test -- --watchAll=false  # disable watch mode in CI
-
-      # Build project
-      - name: Build project
-        run: npm run build
-
-      # Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v5
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-          publish_branch: gh-pages
+        run: npm test
