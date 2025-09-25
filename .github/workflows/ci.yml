@@ -1,6 +1,5 @@
-name: ReactJS CI Pipeline
+name: ReactJS CI/CD Pipeline
 
-# Trigger workflow on push or pull request to main branch
 on:
   push:
     branches:
@@ -10,28 +9,36 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  build-test-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code
+      # Checkout code
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Setup Node.js
+      # Setup Node.js v22
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '22.14.0'
 
-      # Step 3: Install dependencies
+      # Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci  # safer than npm install in CI
 
-      # Step 4: Run tests
+      # Run tests
       - name: Run tests
-        run: npm test
+        run: npm test -- --watchAll=false  # disable watch mode in CI
 
-      # Step 5: Build project
+      # Build project
       - name: Build project
         run: npm run build
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: gh-pages
